@@ -46,13 +46,26 @@ void insertar(heap_t *heap, int valor){
     }
 }
 void visualizar(heap_t *heap){
+    nodo_Bt *actual = heap->head;
 
+    while (actual != NULL) {
+        printf("%d ", actual->valor);
+        actual = actual->bro;
+        }
+    printf("\n");
 }
 
 int main(){
     heap_t *heapp= heap_ini(); 
     nodo_Bt *nodo_ini = init_nodo(13);
     printf("valor del nodo es %d",nodo_ini->valor);
+
+    insertar(heapp, 8);
+    insertar(heapp, 5);
+    insertar(heapp, 12);
+
+    visualizar(heapp);
+    
     return 0;
 
 }
