@@ -18,6 +18,9 @@ nodo_Bt *init_nodo(int valor){
     nodo_Bt *nodo = malloc(sizeof(nodo_Bt));
     nodo->valor = valor;
     nodo->k=0;
+    nodo->hijo = 0;
+    nodo->padre = 0;
+    nodo ->bro = 0;
     return nodo;
 }
 
@@ -27,6 +30,13 @@ heap_t *heap_ini(){
     heap->head=NULL;
     return heap;
 
+}
+
+void insertar(heap_t *heap, int valor){
+    nodo_Bt *nuevo_nodo = init_nodo(valor);
+    if (heap -> heap == NULL){
+        heap -> heap = nuevo_nodo;
+    }
 }
 
 int main(){
