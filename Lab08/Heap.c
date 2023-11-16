@@ -13,7 +13,7 @@ typedef struct Binomial_Tree{
 typedef struct _heap_{
     nodo_Bt *head;
 }heap_t;
-//inicializa un BT
+
 nodo_Bt *init_nodo(int valor){
     nodo_Bt *nodo = malloc(sizeof(nodo_Bt));
     nodo->valor = valor;
@@ -24,7 +24,7 @@ nodo_Bt *init_nodo(int valor){
     return nodo;
 }
 
-// inici--- un heap (vacio)
+
 heap_t *heap_ini(){
     heap_t *heap = malloc(sizeof(heap_t));
     heap->head=NULL;
@@ -33,15 +33,22 @@ heap_t *heap_ini(){
 }
 
 void insertar(heap_t *heap, int valor){
+
     nodo_Bt *nuevo_nodo = init_nodo(valor);
-    if (heap -> heap == NULL){
-        heap -> heap = nuevo_nodo;
+
+    if (heap->head == NULL || nuevo_nodo->k < heap->head->k){
+        nuevo_nodo->bro = heap->head;
+        heap->head = nuevo_nodo;
+    }
+    else{
+    nuevo_nodo->bro = heap->head->bro;
+    heap->head->bro = nuevo_nodo;
     }
 }
 
 int main(){
-    heap_t *heapp= heap_ini(); // heap
-    nodo_Bt *nodo_ini = init_nodo(13);// nodo
+    heap_t *heapp= heap_ini(); 
+    nodo_Bt *nodo_ini = init_nodo(13);
     printf("valor del nodo es %d",nodo_ini->valor);
     return 0;
 
