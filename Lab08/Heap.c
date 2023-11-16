@@ -45,6 +45,9 @@ void insertar(heap_t *heap, int valor){
     heap->head->bro = nuevo_nodo;
     }
 }
+void visualizar(heap_t *heap){
+
+}
 
 int main(){
     heap_t *heapp= heap_ini(); 
