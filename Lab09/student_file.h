@@ -14,20 +14,20 @@ private:
     map<string, int> rank;
 
 public:
-    void initialize(const string& s) {
+    void makeSet(const string& s) {
         parent[s] = s;
         rank[s] = 0;
     }
 
-    string findSet(const string& s) {
+    string find(const string& s) {
         if (parent[s] != s)
-            parent[s] = findSet(parent[s]);
+            parent[s] = find(parent[s]);
         return parent[s];
     }
 
-    bool mergeSets(const string& a, const string& b) {
-        string rootA = findSet(a);
-        string rootB = findSet(b);
+    bool unionSets(const string& a, const string& b) {
+        string rootA = find(a);
+        string rootB = find(b);
 
         if (rootA == rootB)
             return false;
@@ -55,49 +55,52 @@ public:
     Road(string i, string c1, string c2, int co = 0) : id(i), city1(c1), city2(c2), cost(co) {}
 };
 
-string reconstructRoads(vector<string> roadStrings) {
+string reconstruye(vector<string> carreteras) {
     vector<Road> damagedRoads;
-    UnionFind unionFind;
+    UnionFind uf;
     set<string> cities;
     set<string> selectedRoads;
 
-    for (const auto& roadStr : roadStrings) {
+    for (const auto& roadStr : carreteras) {
         stringstream ss(roadStr);
         string id, city1, city2;
         ss >> id >> city1 >> city2;
-        unionFind.initialize(city1);
-        unionFind.initialize(city2);
+        uf.makeSet(city1);
+        uf.makeSet(city2);
         cities.insert(city1);
         cities.insert(city2);
     }
 
-    for (const auto& roadStr : roadStrings) {
+    for (const auto& roadStr : carreteras) {
         stringstream ss(roadStr);
         string id, city1, city2;
         int cost = 0;
         ss >> id >> city1 >> city2;
         if (!(ss >> cost)) {
-            unionFind.mergeSets(city1, city2);
+            uf.unionSets(city1, city2);
         } else {
             damagedRoads.emplace_back(id, city1, city2, cost);
         }
     }
 
     sort(damagedRoads.begin(), damagedRoads.end(), [](const Road& a, const Road& b) {
-        return (a.cost != b.cost) ? (a.cost < b.cost) : (a.id < b.id);
+        if (a.cost != b.cost) {
+            return a.cost < b.cost;
+        }
+        return a.id < b.id;
     });
 
     for (const auto& road : damagedRoads) {
-        if (unionFind.findSet(road.city1) != unionFind.findSet(road.city2)) {
-            unionFind.mergeSets(road.city1, road.city2);
+        if (uf.find(road.city1) != uf.find(road.city2)) {
+            uf.unionSets(road.city1, road.city2);
             selectedRoads.insert(road.id);
         }
     }
 
-    string root = unionFind.findSet(*cities.begin());
+    string root = uf.find(*cities.begin());
     for (const auto& city : cities) {
-        if (unionFind.findSet(city) != root) {
-            return "IMPOSSIBLE";
+        if (uf.find(city) != root) {
+            return "IMPOSIBLE";
         }
     }
 
